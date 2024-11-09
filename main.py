@@ -1,3 +1,5 @@
+from io import BytesIO
+
 from fastapi import FastAPI, Body, UploadFile, File, HTTPException
 from typing import List
 from sqlalchemy import select
@@ -42,7 +44,7 @@ async def add_details(
     db: db_dependency,
     xlsx_file: UploadFile = File(...)
 ) -> List[DetailSchema]:
-    xlsx_content: bytes = await xlsx_file.read()
+    xlsx_content: BytesIO = await xlsx_file.read()
     df: pd.DataFrame = pd.read_excel(xlsx_content, header=0)
 
     detail_orm_list: List[Detail] = [
