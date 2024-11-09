@@ -9,7 +9,7 @@ class Base(DeclarativeBase):
     pass
 
 
-url = settings.db.DATABASE_URL_asyncpg
+url = settings.DATABASE_URL_asyncpg
 async_engine = create_async_engine(url)
 async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
 

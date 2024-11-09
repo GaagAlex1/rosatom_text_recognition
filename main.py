@@ -33,9 +33,12 @@ async def add_details(
     xlsx_file: UploadFile = File(...)
 ) -> List[DetailSchema]:
     xlsx_content: bytes = await xlsx_file.read()
-    df: pd.DataFrame = pd.read_excel(xlsx_content)
+    df: pd.DataFrame = pd.read_excel(xlsx_content, header=0)
 
-    detail_orm_list: List[Detail] = [Detail(*row) for row in df.itertuples(index=False)]
+    detail_orm_list: List[Detail] = [
+        Detail(*row.values)
+        for _, row in df.iterrows()
+    ]
 
     db.add_all(detail_orm_list)
     await db.commit()
