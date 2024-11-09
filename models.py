@@ -5,7 +5,7 @@ class Detail(Base):
     __tablename__ = 'detail'
 
     detail_article: Mapped[str] = mapped_column(primary_key=True)
-    detail_number: Mapped[int] = mapped_column(primary_key=True)
+    detail_number: Mapped[int | None] = mapped_column(primary_key=True, nullable=True)
     detail_name: Mapped[str] = mapped_column()
     order_number: Mapped[int] = mapped_column()
     station_block: Mapped[str] = mapped_column()
@@ -13,7 +13,7 @@ class Detail(Base):
     def __init__(
         self,
         detail_article: str,
-        detail_number: int,
+        detail_number: int | None,
         detail_name: str,
         order_number: int,
         station_block: str

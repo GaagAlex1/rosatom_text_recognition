@@ -8,6 +8,16 @@ import pandas as pd
 
 app = FastAPI()
 
+@app.post('/model')
+async def image_to_text(
+    image: UploadFile = File(...)
+) -> ModelResponseSchema:
+    model_response: ModelResponseSchema = ModelResponseSchema(
+        detail_article = '1391-30-0108 ТС1.1',
+        detail_number = 75
+    )
+    return model_response
+
 @app.post('/get_detail')
 async def get_detail(
     db: db_dependency,
