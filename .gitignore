@@ -1,4 +1,5 @@
 .venv/
 .idea/
 rosatom_hack/
+__pycache__
 .env
