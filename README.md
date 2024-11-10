@@ -57,4 +57,4 @@ docker compose up --build
 3. Поздравляем, вы получили доступ к приложению!
 
 ## Пример прогноза 
-![Прогноз на радиальной детали](https://github.com/GaagAlex1/rosatom_text_recognition/example.jpg)
+![Прогноз на радиальной детали](https://github.com/GaagAlex1/rosatom_text_recognition/blob/main/example.jpg)
