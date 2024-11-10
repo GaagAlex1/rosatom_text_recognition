@@ -1,8 +1,9 @@
+import os
 from ultralytics import YOLO
 from transformers import AutoModel, AutoTokenizer
 from functools import lru_cache
 
-YOLO_MODEL_PATH = "yolo11s_best.pt"
+YOLO_MODEL_PATH = os.path.join(os.path.dirname(__file__), 'yolo11s_best.pt')
 
 @lru_cache(maxsize=1)
 def get_text_box_detector():

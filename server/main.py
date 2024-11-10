@@ -1,4 +1,3 @@
-from io import BytesIO
 from fastapi import FastAPI, Body, UploadFile, File
 from typing import List
 from sqlalchemy import select
@@ -6,18 +5,26 @@ from schemas import ModelResponseSchema, DetailSchema
 from models import Detail
 from database import db_dependency
 import pandas as pd
+from PIL import Image
+from io import BytesIO
+from ml.image_processing import get_text_and_box_from_image
+from ml.init_models import get_text_recognizer, get_text_box_detector
 
 app = FastAPI()
 
 @app.post('/model')
 async def image_to_text(
-    image: UploadFile = File(...)
+    file: UploadFile = File(...)
 ) -> ModelResponseSchema:
-    model_response: ModelResponseSchema = ModelResponseSchema(
-        detail_article = '1391-30-0108 ТС1.1',
-        detail_number = 75
+    img_bytes = await file.read()
+    image = Image.open(BytesIO(img_bytes))
+
+    text, bbox = get_text_and_box_from_image(image, *get_text_recognizer(), get_text_box_detector())
+    print(text, bbox)
+    return ModelResponseSchema(
+        detail_article=text,
+        detail_number=0
     )
-    return model_response
 
 @app.post('/get_detail')
 async def get_detail(

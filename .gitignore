@@ -3,3 +3,4 @@
 rosatom_hack/
 __pycache__
 .env
+server/__pycache__

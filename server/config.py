@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
 from sqlalchemy import URL
 
 class Settings(BaseSettings):
@@ -18,7 +17,7 @@ class Settings(BaseSettings):
                           port=self.db_port,
                           database=self.db_name)
 
-    model_config = SettingsConfigDict(env_file='.env', case_sensitive=False)
+    model_config = SettingsConfigDict(env_file='../.env', case_sensitive=False)
 
 
 settings = Settings()
