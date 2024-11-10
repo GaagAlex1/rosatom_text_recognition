@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Body, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from sqlalchemy import select
 from schemas import ModelResponseSchema, DetailSchema
@@ -7,10 +8,19 @@ from database import db_dependency
 import pandas as pd
 from PIL import Image
 from io import BytesIO
+
 from ml.image_processing import get_text_and_box_from_image
 from ml.init_models import get_text_recognizer, get_text_box_detector
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    # allow_origins=origins,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post('/model')
 async def image_to_text(
@@ -20,7 +30,6 @@ async def image_to_text(
     image = Image.open(BytesIO(img_bytes))
 
     text, bbox = get_text_and_box_from_image(image, *get_text_recognizer(), get_text_box_detector())
-    print(text, bbox)
     return ModelResponseSchema(
         detail_article=text,
         detail_number=0
