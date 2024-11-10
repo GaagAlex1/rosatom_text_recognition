@@ -37,7 +37,7 @@ async def image_to_text(
     image = Image.open(BytesIO(img_bytes))
 
     text, bbox = predict_on_image(image, *get_detail_dataset_info(), *get_text_recognizer(), get_text_box_detector())
-    article, number = text.rsplit(' ', 1)
+    article, number = text[1:-1].rsplit(' ', 1)
 
     return ModelResponseSchema(
         detail_article=article,
