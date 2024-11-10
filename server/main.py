@@ -9,7 +9,7 @@ import pandas as pd
 from PIL import Image
 from io import BytesIO
 
-from ml.image_processing import get_text_and_box_from_image
+from ml.image_processing import predict_on_image, get_detail_dataset_info
 from ml.init_models import get_text_recognizer, get_text_box_detector
 
 app = FastAPI()
@@ -26,13 +26,22 @@ app.add_middleware(
 async def image_to_text(
     file: UploadFile = File(...)
 ) -> ModelResponseSchema:
+    """
+    Данный эндпоинт связывает сервер с API модели, на входе подается файл,
+    на выходе получаем артикул и номер детали и баундинг бокс
+    :param file
+    :return: model_response
+    """
+
     img_bytes = await file.read()
     image = Image.open(BytesIO(img_bytes))
 
-    text, bbox = get_text_and_box_from_image(image, *get_text_recognizer(), get_text_box_detector())
+    text, bbox = predict_on_image(image, *get_detail_dataset_info(), *get_text_recognizer(), get_text_box_detector())
+    article, number = text.rsplit(' ', 1)
+
     return ModelResponseSchema(
-        detail_article=text,
-        detail_number=0
+        detail_article=article,
+        detail_number=number
     )
 
 @app.post('/get_detail')
@@ -40,6 +49,12 @@ async def get_detail(
     db: db_dependency,
     model_response: ModelResponseSchema = Body(...)
 ) -> DetailSchema | None:
+    """
+    Данный эндпоинт по номеру и артикулу позволяет получить информацию о детали с базы
+    :param db, model_response = {article, number}
+    :return: detail_schema
+    """
+
     detail_orm: Detail | None = \
         (await db
          .execute(
@@ -59,6 +74,12 @@ async def add_details(
     db: db_dependency,
     xlsx_file: UploadFile = File(...)
 ) -> List[DetailSchema]:
+    """
+    Данный эндпоинт отвечает за загрузку данных из xsl в базу данных
+    :param db, xlsx_file
+    :return: detail_schema
+    """
+
     xlsx_content: BytesIO = await xlsx_file.read()
     df: pd.DataFrame = pd.read_excel(xlsx_content, header=0)
 

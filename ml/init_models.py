@@ -7,10 +7,23 @@ YOLO_MODEL_PATH = os.path.join(os.path.dirname(__file__), 'yolo11s_best.pt')
 
 @lru_cache(maxsize=1)
 def get_text_box_detector():
+    """
+    Возвращает объект класса YOLO - модель для детекции текстовых блоков
+
+    Returns:
+    YOLO: объект класса YOLO для детекции текстовых блоков
+    """
     return YOLO(YOLO_MODEL_PATH, verbose=False)
+
 
 @lru_cache(maxsize=1)
 def get_text_recognizer():
+    """
+    Возвращает GOT-OCR2_0 - трансформер для распознавания текста на изображении
+
+    Returns:
+    AutoModel: GOT-OCR2_0
+    """
     tokenizer = AutoTokenizer.from_pretrained(
         "ucaslcl/GOT-OCR2_0", trust_remote_code=True
     )
