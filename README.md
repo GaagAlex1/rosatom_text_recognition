@@ -56,5 +56,19 @@ docker compose up --build
 2. Установите .APK
 3. Поздравляем, вы получили доступ к приложению!
 
+### Отладка и сборка приложения
+#### Отладка
+```bash
+npx expo start -c
+```
+
+#### Сборка
+```bash
+eas build -p android --profile preview --clear-cache
+```
+
+## Ссылка на APK
+https://drive.google.com/file/d/1kC09g39nU_T5DJL74r-hVX4BwDBXc0G0/view?usp=sharing
+
 ## Пример прогноза 
 ![Прогноз на радиальной детали](https://github.com/GaagAlex1/rosatom_text_recognition/blob/main/example.jpg)
