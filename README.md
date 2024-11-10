@@ -58,3 +58,4 @@ docker compose up --build
 
 ## Пример прогноза 
 ![Прогноз на радиальной детали](https://github.com/GaagAlex1/rosatom_text_recognition/blob/main/example.jpg)
+(195-30-1286 3090)
