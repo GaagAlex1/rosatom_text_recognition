@@ -60,7 +60,9 @@ async def get_detail(
          .execute(
             select(Detail)
             .filter(
-                Detail.detail_article.ilike(model_response.detail_article) and
+                Detail.detail_article.ilike(model_response.detail_article)
+            )
+            .filter(
                 Detail.detail_number == model_response.detail_number
             )
         )) \
