@@ -59,17 +59,15 @@ async def get_detail(
         (await db
          .execute(
             select(Detail)
-            .filter(
-                Detail.detail_article.ilike(model_response.detail_article)
-            )
-            .filter(
+            .where(
+                Detail.detail_article.contains(model_response.detail_article),
                 Detail.detail_number == model_response.detail_number
             )
         )) \
         .scalars() \
         .one_or_none()
 
-    return DetailSchema.model_validate(detail_orm) if detail_orm is not None else None
+    return DetailSchema.model_validate(detail_orm) if detail_orm else None
 
 @app.post('/add_details')
 async def add_details(
